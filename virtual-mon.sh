@@ -25,15 +25,28 @@ function stop() {
     xrandr --rmmode $screen
 }
 
-function show_help() {
-    echo "virtual-mon [start | stop]"
-    echo "start: inicia monitor virtual basado en xrandr"
-    echo "stop:  detiene y elimina el monitor virtual"
+function adb_eth_on() {
+    adb shell service call tethering 3 i32 1
+    # adb shell am start -n com.android.settings/.TetherSettings
+    # adb shell input keyevent 20
+    # adb shell input keyevent 20
+    # adb shell input keyevent KEYCODE_ENTER
+    # sleep 2
+    # adb shell input keyevent 4
+}
+function adb_eth_off() {
+    adb shell service call tethering 3 i32 0
 }
 
-
-echo $screen
-echo $screen_gtf
+function show_help() {
+    echo "virtual-mon [start | stop]"
+    echo ""
+    echo "start:  inicia monitor virtual basado en xrandr"
+    echo "stop:   detiene y elimina el monitor virtual"
+    echo "ethon:  inicia el anclaje de red por usb (android usb tethering)"
+    echo "ethoff: detiene el servicio de red por usb."
+    echo "help:   muestra este mensaje de ayuda"
+}
 
 
 if [ $# = 0 ]; then
@@ -43,6 +56,10 @@ elif [ $# -eq 1 ]; then
         start
     elif [ $1 = stop ]; then
         stop
+    elif [ $1 = ethon ]; then
+        adb_eth_on
+    elif [ $1 = ethoff ]; then
+        adb_eth_off
     elif [ $1 = help ]; then
         show_help
     else
