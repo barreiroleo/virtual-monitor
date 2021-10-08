@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # screen_gtf es la salida de
 #   >gtf 1920 1200 60 || gtf 1280 800 60
 # El string screen_gtf equivale a la entrada con commilas,
@@ -27,13 +28,17 @@ function stop() {
 
 function adb_eth_on() {
     adb shell service call tethering 3 i32 1
-    # adb shell am start -n com.android.settings/.TetherSettings
-    # adb shell input keyevent 20
-    # adb shell input keyevent 20
-    # adb shell input keyevent KEYCODE_ENTER
-    # sleep 2
-    # adb shell input keyevent 4
 }
+
+function adb_eth_on_alter() {
+    adb shell am start -n com.android.settings/.TetherSettings
+    adb shell input keyevent 20
+    adb shell input keyevent 20
+    adb shell input keyevent KEYCODE_ENTER
+    sleep 2
+    adb shell input keyevent 4
+}
+
 function adb_eth_off() {
     adb shell service call tethering 3 i32 0
 }
@@ -41,11 +46,12 @@ function adb_eth_off() {
 function show_help() {
     echo "virtual-mon [start | stop]"
     echo ""
-    echo "start:  inicia monitor virtual basado en xrandr"
-    echo "stop:   detiene y elimina el monitor virtual"
-    echo "ethon:  inicia el anclaje de red por usb (android usb tethering)"
-    echo "ethoff: detiene el servicio de red por usb."
-    echo "help:   muestra este mensaje de ayuda"
+    echo "start:     inicia monitor virtual basado en xrandr"
+    echo "stop:      detiene y elimina el monitor virtual"
+    echo "ethon:     inicia el anclaje de red por usb (android usb tethering)"
+    echo "ethoff:    detiene el servicio de red por usb."
+    echo "ethon_alt: método alternativo para lanzar usb tethering"
+    echo "help:      muestra este mensaje de ayuda"
 }
 
 
@@ -60,6 +66,8 @@ elif [ $# -eq 1 ]; then
         adb_eth_on
     elif [ $1 = ethoff ]; then
         adb_eth_off
+    elif [ $1 = ethon_alt ]; then
+        adb_eth_on_alter
     elif [ $1 = help ]; then
         show_help
     else

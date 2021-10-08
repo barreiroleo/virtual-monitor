@@ -1,7 +1,10 @@
 # virtual-screen
 Procedimiento para crear un escritorio virtual y utilizar android como pantalla secundaria.
-
-Probado bajo X11, Gnome 40, Manjaro.
+Probado bajo X11, Gnome 40, Manjaro. Android 11.
+Se recomienda crear un link simbólico para ejecutar sin buscar el directorio.
+```bash
+ln virtual-mon.sh /usr/bin/virtual-mon.sh
+```
 
 ## Using script
 ```
